@@ -209,6 +209,27 @@ app.post('/ai/chat', async (req, res) => {
   }
 });
 
+// ── EGO SMS: Send SMS ──────────────────────────────────────────────────────
+// POST /sms  { phone, message }
+app.post('/sms', async (req, res) => {
+  try {
+    const { phone, message } = req.body;
+    if (!phone || !message) {
+      return res.status(400).json({ status: 'error', message: 'phone and message required' });
+    }
+
+    const number = phone.replace(/[\s\-\(\)\+]/g, '').replace(/^0/, '256');
+    const url = `https://www.egosms.co/api/v1/plain/?number=${number}&message=${encodeURIComponent(message)}&username=INFINITECH&password=${encodeURIComponent('Moses,123##')}&sender=PowerPesa`;
+
+    const r = await axios.get(url, { timeout: 15000 });
+    console.log('[SMS]', number, '->', r.status);
+    res.json({ status: 'ok', message: 'SMS sent' });
+  } catch (e) {
+    console.error('[SMS] ERROR', e.message);
+    res.json({ status: 'error', message: e.message });
+  }
+});
+
 // ── Start ──────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`PowerPesa Proxy v1.0.0 running on port ${PORT}`));
