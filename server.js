@@ -14,10 +14,11 @@ const GROQ_KEY     = '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';
 // ── CORS ───────────────────────────────────────────────────────────────────
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin',  '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, X-Proxy-Key, Cache-Control, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Proxy-Key, Cache-Control, Authorization');
+  res.header('Access-Control-Max-Age', '86400');
   res.header('Cache-Control', 'no-store, no-cache');
-  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
 
